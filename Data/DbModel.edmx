@@ -1,0 +1,642 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище NTCBetBDModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Bet">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="TournamentId" Type="int" />
+          <Property Name="TourId" Type="int" />
+          <Property Name="MatchId" Type="int" Nullable="false" />
+          <Property Name="ScoreH" Type="int" />
+          <Property Name="ScoreA" Type="int" />
+          <Property Name="IsSet" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Command">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="LogoId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Logo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Data" Type="varbinary(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Match">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TournamentId" Type="int" />
+          <Property Name="TourId" Type="int" />
+          <Property Name="CommandHId" Type="int" Nullable="false" />
+          <Property Name="CommandAId" Type="int" Nullable="false" />
+          <Property Name="ScoreH" Type="int" />
+          <Property Name="ScoreA" Type="int" />
+          <Property Name="Played" Type="bit" Nullable="false" />
+          <Property Name="Date" Type="smalldatetime" />
+        </EntityType>
+        <EntityType Name="Tour">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TournamentId" Type="int" Nullable="false" />
+          <Property Name="TourName" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tournament">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="LogoId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Bet_Match">
+          <End Role="Match" Type="Self.Match" Multiplicity="1" />
+          <End Role="Bet" Type="Self.Bet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Match">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Bet">
+              <PropertyRef Name="MatchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Bet_Tour">
+          <End Role="Tour" Type="Self.Tour" Multiplicity="0..1" />
+          <End Role="Bet" Type="Self.Bet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tour">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Bet">
+              <PropertyRef Name="TourId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Bet_Tournament">
+          <End Role="Tournament" Type="Self.Tournament" Multiplicity="0..1" />
+          <End Role="Bet" Type="Self.Bet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tournament">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Bet">
+              <PropertyRef Name="TournamentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Bet_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Bet" Type="Self.Bet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Bet">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Command_Logo">
+          <End Role="Logo" Type="Self.Logo" Multiplicity="1" />
+          <End Role="Command" Type="Self.Command" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Logo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Command">
+              <PropertyRef Name="LogoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Match_Command">
+          <End Role="Command" Type="Self.Command" Multiplicity="1" />
+          <End Role="Match" Type="Self.Match" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Command">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Match">
+              <PropertyRef Name="CommandHId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Match_Command1">
+          <End Role="Command" Type="Self.Command" Multiplicity="1" />
+          <End Role="Match" Type="Self.Match" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Command">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Match">
+              <PropertyRef Name="CommandAId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Match_Tour">
+          <End Role="Tour" Type="Self.Tour" Multiplicity="0..1" />
+          <End Role="Match" Type="Self.Match" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tour">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Match">
+              <PropertyRef Name="TourId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Match_Tournament">
+          <End Role="Tournament" Type="Self.Tournament" Multiplicity="0..1" />
+          <End Role="Match" Type="Self.Match" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tournament">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Match">
+              <PropertyRef Name="TournamentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tour_Tournament">
+          <End Role="Tournament" Type="Self.Tournament" Multiplicity="1" />
+          <End Role="Tour" Type="Self.Tour" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tournament">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tour">
+              <PropertyRef Name="TournamentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tournament_Logo">
+          <End Role="Logo" Type="Self.Logo" Multiplicity="1" />
+          <End Role="Tournament" Type="Self.Tournament" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Logo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tournament">
+              <PropertyRef Name="LogoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище NTCBetBDModelContainer">
+          <EntitySet Name="Bet" EntityType="Self.Bet" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Command" EntityType="Self.Command" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Logo" EntityType="Self.Logo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Match" EntityType="Self.Match" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tour" EntityType="Self.Tour" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tournament" EntityType="Self.Tournament" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Bet_Match" Association="Self.FK_Bet_Match">
+            <End Role="Match" EntitySet="Match" />
+            <End Role="Bet" EntitySet="Bet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bet_Tour" Association="Self.FK_Bet_Tour">
+            <End Role="Tour" EntitySet="Tour" />
+            <End Role="Bet" EntitySet="Bet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bet_Tournament" Association="Self.FK_Bet_Tournament">
+            <End Role="Tournament" EntitySet="Tournament" />
+            <End Role="Bet" EntitySet="Bet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bet_User" Association="Self.FK_Bet_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Bet" EntitySet="Bet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Command_Logo" Association="Self.FK_Command_Logo">
+            <End Role="Logo" EntitySet="Logo" />
+            <End Role="Command" EntitySet="Command" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Match_Command" Association="Self.FK_Match_Command">
+            <End Role="Command" EntitySet="Command" />
+            <End Role="Match" EntitySet="Match" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Match_Command1" Association="Self.FK_Match_Command1">
+            <End Role="Command" EntitySet="Command" />
+            <End Role="Match" EntitySet="Match" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Match_Tour" Association="Self.FK_Match_Tour">
+            <End Role="Tour" EntitySet="Tour" />
+            <End Role="Match" EntitySet="Match" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Match_Tournament" Association="Self.FK_Match_Tournament">
+            <End Role="Tournament" EntitySet="Tournament" />
+            <End Role="Match" EntitySet="Match" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tour_Tournament" Association="Self.FK_Tour_Tournament">
+            <End Role="Tournament" EntitySet="Tournament" />
+            <End Role="Tour" EntitySet="Tour" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tournament_Logo" Association="Self.FK_Tournament_Logo">
+            <End Role="Logo" EntitySet="Logo" />
+            <End Role="Tournament" EntitySet="Tournament" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="NTCBetBDModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Bet">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="TournamentId" Type="Int32" />
+          <Property Name="TourId" Type="Int32" />
+          <Property Name="MatchId" Type="Int32" Nullable="false" />
+          <Property Name="ScoreH" Type="Int32" />
+          <Property Name="ScoreA" Type="Int32" />
+          <Property Name="IsSet" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Match" Relationship="Self.FK_Bet_Match" FromRole="Bet" ToRole="Match" />
+          <NavigationProperty Name="Tour" Relationship="Self.FK_Bet_Tour" FromRole="Bet" ToRole="Tour" />
+          <NavigationProperty Name="Tournament" Relationship="Self.FK_Bet_Tournament" FromRole="Bet" ToRole="Tournament" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Bet_User" FromRole="Bet" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Command">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LogoId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Logo" Relationship="Self.FK_Command_Logo" FromRole="Command" ToRole="Logo" />
+          <NavigationProperty Name="MatchesH" Relationship="Self.FK_Match_Command" FromRole="Command" ToRole="Match" />
+          <NavigationProperty Name="MatchesA" Relationship="Self.FK_Match_Command1" FromRole="Command" ToRole="Match" />
+        </EntityType>
+        <EntityType Name="Logo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Data" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+          <NavigationProperty Name="Commands" Relationship="Self.FK_Command_Logo" FromRole="Logo" ToRole="Command" />
+          <NavigationProperty Name="Tournaments" Relationship="Self.FK_Tournament_Logo" FromRole="Logo" ToRole="Tournament" />
+        </EntityType>
+        <EntityType Name="Match">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TournamentId" Type="Int32" />
+          <Property Name="TourId" Type="Int32" />
+          <Property Name="CommandHId" Type="Int32" Nullable="false" />
+          <Property Name="CommandAId" Type="Int32" Nullable="false" />
+          <Property Name="ScoreH" Type="Int32" />
+          <Property Name="ScoreA" Type="Int32" />
+          <Property Name="Played" Type="Boolean" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Bets" Relationship="Self.FK_Bet_Match" FromRole="Match" ToRole="Bet" />
+          <NavigationProperty Name="CommandH" Relationship="Self.FK_Match_Command" FromRole="Match" ToRole="Command" />
+          <NavigationProperty Name="CommandA" Relationship="Self.FK_Match_Command1" FromRole="Match" ToRole="Command" />
+          <NavigationProperty Name="Tour" Relationship="Self.FK_Match_Tour" FromRole="Match" ToRole="Tour" />
+          <NavigationProperty Name="Tournament" Relationship="Self.FK_Match_Tournament" FromRole="Match" ToRole="Tournament" />
+        </EntityType>
+        <EntityType Name="Tour">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TournamentId" Type="Int32" Nullable="false" />
+          <Property Name="TourName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Bets" Relationship="Self.FK_Bet_Tour" FromRole="Tour" ToRole="Bet" />
+          <NavigationProperty Name="Matches" Relationship="Self.FK_Match_Tour" FromRole="Tour" ToRole="Match" />
+          <NavigationProperty Name="Tournament" Relationship="Self.FK_Tour_Tournament" FromRole="Tour" ToRole="Tournament" />
+        </EntityType>
+        <EntityType Name="Tournament">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LogoId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Bets" Relationship="Self.FK_Bet_Tournament" FromRole="Tournament" ToRole="Bet" />
+          <NavigationProperty Name="Logo" Relationship="Self.FK_Tournament_Logo" FromRole="Tournament" ToRole="Logo" />
+          <NavigationProperty Name="Matches" Relationship="Self.FK_Match_Tournament" FromRole="Tournament" ToRole="Match" />
+          <NavigationProperty Name="Tours" Relationship="Self.FK_Tour_Tournament" FromRole="Tournament" ToRole="Tour" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Bets" Relationship="Self.FK_Bet_User" FromRole="User" ToRole="Bet" />
+        </EntityType>
+        <Association Name="FK_Bet_Match">
+          <End Role="Match" Type="Self.Match" Multiplicity="1" />
+          <End Role="Bet" Type="Self.Bet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Match">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Bet">
+              <PropertyRef Name="MatchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Bet_Tour">
+          <End Role="Tour" Type="Self.Tour" Multiplicity="0..1" />
+          <End Role="Bet" Type="Self.Bet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tour">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Bet">
+              <PropertyRef Name="TourId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Bet_Tournament">
+          <End Role="Tournament" Type="Self.Tournament" Multiplicity="0..1" />
+          <End Role="Bet" Type="Self.Bet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tournament">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Bet">
+              <PropertyRef Name="TournamentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Bet_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Bet" Type="Self.Bet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Bet">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Command_Logo">
+          <End Role="Logo" Type="Self.Logo" Multiplicity="1" />
+          <End Role="Command" Type="Self.Command" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Logo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Command">
+              <PropertyRef Name="LogoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Match_Command">
+          <End Role="Command" Type="Self.Command" Multiplicity="1" />
+          <End Role="Match" Type="Self.Match" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Command">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Match">
+              <PropertyRef Name="CommandHId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Match_Command1">
+          <End Role="Command" Type="Self.Command" Multiplicity="1" />
+          <End Role="Match" Type="Self.Match" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Command">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Match">
+              <PropertyRef Name="CommandAId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tournament_Logo">
+          <End Role="Logo" Type="Self.Logo" Multiplicity="1" />
+          <End Role="Tournament" Type="Self.Tournament" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Logo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tournament">
+              <PropertyRef Name="LogoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Match_Tour">
+          <End Role="Tour" Type="Self.Tour" Multiplicity="0..1" />
+          <End Role="Match" Type="Self.Match" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tour">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Match">
+              <PropertyRef Name="TourId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Match_Tournament">
+          <End Role="Tournament" Type="Self.Tournament" Multiplicity="0..1" />
+          <End Role="Match" Type="Self.Match" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tournament">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Match">
+              <PropertyRef Name="TournamentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tour_Tournament">
+          <End Role="Tournament" Type="Self.Tournament" Multiplicity="1" />
+          <End Role="Tour" Type="Self.Tour" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tournament">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tour">
+              <PropertyRef Name="TournamentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="NTCBetBDContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Bets" EntityType="Self.Bet" />
+          <EntitySet Name="Commands" EntityType="Self.Command" />
+          <EntitySet Name="Logos" EntityType="Self.Logo" />
+          <EntitySet Name="Matches" EntityType="Self.Match" />
+          <EntitySet Name="Tours" EntityType="Self.Tour" />
+          <EntitySet Name="Tournaments" EntityType="Self.Tournament" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <AssociationSet Name="FK_Bet_Match" Association="Self.FK_Bet_Match">
+            <End Role="Match" EntitySet="Matches" />
+            <End Role="Bet" EntitySet="Bets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bet_Tour" Association="Self.FK_Bet_Tour">
+            <End Role="Tour" EntitySet="Tours" />
+            <End Role="Bet" EntitySet="Bets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bet_Tournament" Association="Self.FK_Bet_Tournament">
+            <End Role="Tournament" EntitySet="Tournaments" />
+            <End Role="Bet" EntitySet="Bets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bet_User" Association="Self.FK_Bet_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Bet" EntitySet="Bets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Command_Logo" Association="Self.FK_Command_Logo">
+            <End Role="Logo" EntitySet="Logos" />
+            <End Role="Command" EntitySet="Commands" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Match_Command" Association="Self.FK_Match_Command">
+            <End Role="Command" EntitySet="Commands" />
+            <End Role="Match" EntitySet="Matches" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Match_Command1" Association="Self.FK_Match_Command1">
+            <End Role="Command" EntitySet="Commands" />
+            <End Role="Match" EntitySet="Matches" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tournament_Logo" Association="Self.FK_Tournament_Logo">
+            <End Role="Logo" EntitySet="Logos" />
+            <End Role="Tournament" EntitySet="Tournaments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Match_Tour" Association="Self.FK_Match_Tour">
+            <End Role="Tour" EntitySet="Tours" />
+            <End Role="Match" EntitySet="Matches" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Match_Tournament" Association="Self.FK_Match_Tournament">
+            <End Role="Tournament" EntitySet="Tournaments" />
+            <End Role="Match" EntitySet="Matches" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tour_Tournament" Association="Self.FK_Tour_Tournament">
+            <End Role="Tournament" EntitySet="Tournaments" />
+            <End Role="Tour" EntitySet="Tours" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище NTCBetBDModelContainer" CdmEntityContainer="NTCBetBDContext">
+          <EntitySetMapping Name="Bets">
+            <EntityTypeMapping TypeName="NTCBetBDModel.Bet">
+              <MappingFragment StoreEntitySet="Bet">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="TournamentId" ColumnName="TournamentId" />
+                <ScalarProperty Name="TourId" ColumnName="TourId" />
+                <ScalarProperty Name="MatchId" ColumnName="MatchId" />
+                <ScalarProperty Name="ScoreH" ColumnName="ScoreH" />
+                <ScalarProperty Name="ScoreA" ColumnName="ScoreA" />
+                <ScalarProperty Name="IsSet" ColumnName="IsSet" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Commands">
+            <EntityTypeMapping TypeName="NTCBetBDModel.Command">
+              <MappingFragment StoreEntitySet="Command">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="LogoId" ColumnName="LogoId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Logos">
+            <EntityTypeMapping TypeName="NTCBetBDModel.Logo">
+              <MappingFragment StoreEntitySet="Logo">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Data" ColumnName="Data" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Matches">
+            <EntityTypeMapping TypeName="NTCBetBDModel.Match">
+              <MappingFragment StoreEntitySet="Match">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="TournamentId" ColumnName="TournamentId" />
+                <ScalarProperty Name="TourId" ColumnName="TourId" />
+                <ScalarProperty Name="CommandHId" ColumnName="CommandHId" />
+                <ScalarProperty Name="CommandAId" ColumnName="CommandAId" />
+                <ScalarProperty Name="ScoreH" ColumnName="ScoreH" />
+                <ScalarProperty Name="ScoreA" ColumnName="ScoreA" />
+                <ScalarProperty Name="Played" ColumnName="Played" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tours">
+            <EntityTypeMapping TypeName="NTCBetBDModel.Tour">
+              <MappingFragment StoreEntitySet="Tour">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="TournamentId" ColumnName="TournamentId" />
+                <ScalarProperty Name="TourName" ColumnName="TourName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tournaments">
+            <EntityTypeMapping TypeName="NTCBetBDModel.Tournament">
+              <MappingFragment StoreEntitySet="Tournament">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="LogoId" ColumnName="LogoId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="NTCBetBDModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

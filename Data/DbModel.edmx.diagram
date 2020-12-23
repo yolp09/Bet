@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="15695693493245018b2877c0096b62e4" Name="Diagram1">
+        <EntityTypeShape EntityType="NTCBetBDModel.Bet" Width="1.5" PointX="9.75" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="NTCBetBDModel.Command" Width="1.5" PointX="3" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NTCBetBDModel.Logo" Width="1.5" PointX="0.75" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NTCBetBDModel.Match" Width="1.5" PointX="7.5" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NTCBetBDModel.Tour" Width="1.5" PointX="5.25" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NTCBetBDModel.Tournament" Width="1.5" PointX="3" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NTCBetBDModel.User" Width="1.5" PointX="7.5" PointY="6.75" IsExpanded="true" />
+        <AssociationConnector Association="NTCBetBDModel.FK_Bet_Match" ManuallyRouted="false" />
+        <AssociationConnector Association="NTCBetBDModel.FK_Bet_Tour" ManuallyRouted="false" />
+        <AssociationConnector Association="NTCBetBDModel.FK_Bet_Tournament" ManuallyRouted="false" />
+        <AssociationConnector Association="NTCBetBDModel.FK_Bet_User" ManuallyRouted="false" />
+        <AssociationConnector Association="NTCBetBDModel.FK_Command_Logo" ManuallyRouted="false" />
+        <AssociationConnector Association="NTCBetBDModel.FK_Match_Command" ManuallyRouted="false" />
+        <AssociationConnector Association="NTCBetBDModel.FK_Match_Command1" ManuallyRouted="false" />
+        <AssociationConnector Association="NTCBetBDModel.FK_Tournament_Logo" ManuallyRouted="false" />
+        <AssociationConnector Association="NTCBetBDModel.FK_Match_Tour" ManuallyRouted="false" />
+        <AssociationConnector Association="NTCBetBDModel.FK_Match_Tournament" ManuallyRouted="false" />
+        <AssociationConnector Association="NTCBetBDModel.FK_Tour_Tournament" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
